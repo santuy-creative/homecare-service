@@ -53,4 +53,12 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::patch('/{uuid}', [\App\Http\Controllers\Api\ServiceTypeController::class, 'update']);
         Route::delete('/{uuid}', [\App\Http\Controllers\Api\ServiceTypeController::class, 'destroy']);
     });
+
+    Route::prefix('drugs')->group(function() {
+        Route::get('/', [\App\Http\Controllers\Api\DrugController::class, 'index']);
+        Route::get('/{uuid}', [\App\Http\Controllers\Api\DrugController::class, 'show']);
+        Route::post('/', [\App\Http\Controllers\Api\DrugController::class, 'store']);
+        Route::patch('/{uuid}', [\App\Http\Controllers\Api\DrugController::class, 'update']);
+        Route::delete('/{uuid}', [\App\Http\Controllers\Api\DrugController::class, 'destroy']);
+    });
 });

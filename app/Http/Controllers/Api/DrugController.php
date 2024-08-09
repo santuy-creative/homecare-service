@@ -2,20 +2,20 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Constants\ServiceTypeResponse;
+use App\Constants\DrugResponse;
 use App\Constants\Pagination;
 use App\Helpers\CommonHelper;
 use App\Http\Controllers\Controller;
-use App\Repositories\ServiceTypeRepository;
+use App\Repositories\DrugRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
-class ServiceTypeController extends Controller
+class DrugController extends Controller
 {
     protected $repository;
     public function __construct(
-        ServiceTypeRepository $repository,
+        DrugRepository $repository,
     )
     {
         $this->repository = $repository;
@@ -39,8 +39,8 @@ class ServiceTypeController extends Controller
             $totalRoles = $this->repository->count($validator);
 
             return response()->json([
-                'status' => ServiceTypeResponse::SUCCESS,
-                'message' => ServiceTypeResponse::SUCCESS_ALL_RETRIEVED,
+                'status' => DrugResponse::SUCCESS,
+                'message' => DrugResponse::SUCCESS_ALL_RETRIEVED,
                 'data' => $grades,
                 'total' => $totalRoles,
             ]);
@@ -50,7 +50,7 @@ class ServiceTypeController extends Controller
             $errCode = CommonHelper::getStatusCode($errMessage);
 
             return response()->json([
-                'status' => ServiceTypeResponse::ERROR,
+                'status' => DrugResponse::ERROR,
                 'message' => $errMessage,
             ], $errCode);
         }
@@ -62,16 +62,16 @@ class ServiceTypeController extends Controller
 
         if(empty($grade)) {
             return response()->json([
-                'status' => ServiceTypeResponse::SUCCESS,
-                'message' => ServiceTypeResponse::NOT_FOUND,
+                'status' => DrugResponse::SUCCESS,
+                'message' => DrugResponse::NOT_FOUND,
                 'error' => true,
                 'data' => [],
             ], 404);
         }
 
         return response()->json([
-            'status' => ServiceTypeResponse::SUCCESS,
-            'message' => ServiceTypeResponse::SUCCESS_RETRIEVED,
+            'status' => DrugResponse::SUCCESS,
+            'message' => DrugResponse::SUCCESS_RETRIEVED,
             'data' => $grade,
         ]);
     }
@@ -104,8 +104,8 @@ class ServiceTypeController extends Controller
             $grade = $this->repository->add($validator);
 
             return response()->json([
-                'status' => ServiceTypeResponse::SUCCESS,
-                'message' => ServiceTypeResponse::SUCCESS_CREATED,
+                'status' => DrugResponse::SUCCESS,
+                'message' => DrugResponse::SUCCESS_CREATED,
                 'data' => $grade,
             ], 201);
         } catch (\Throwable $th) {
@@ -113,7 +113,7 @@ class ServiceTypeController extends Controller
             $errCode = CommonHelper::getStatusCode($errMessage);
 
             return response()->json([
-                'status' => ServiceTypeResponse::ERROR,
+                'status' => DrugResponse::ERROR,
                 'message' => $errMessage,
             ], $errCode);
         }
@@ -125,8 +125,8 @@ class ServiceTypeController extends Controller
             $grade = $this->repository->find($uuid);
             if (empty($grade)) {
                 return response()->json([
-                    'status'  => ServiceTypeResponse::SUCCESS,
-                    'message' => ServiceTypeResponse::NOT_FOUND,
+                    'status'  => DrugResponse::SUCCESS,
+                    'message' => DrugResponse::NOT_FOUND,
                     'data'    => $grade,
                 ], 201);
             }
@@ -154,8 +154,8 @@ class ServiceTypeController extends Controller
             $grade = $this->repository->update($uuid, $validator);
 
             return response()->json([
-                'status' => ServiceTypeResponse::SUCCESS,
-                'message' => ServiceTypeResponse::SUCCESS_UPDATED,
+                'status' => DrugResponse::SUCCESS,
+                'message' => DrugResponse::SUCCESS_UPDATED,
                 'data' => $grade,
             ], 201);
         } catch (\Throwable $th) {
@@ -163,7 +163,7 @@ class ServiceTypeController extends Controller
             $errCode = CommonHelper::getStatusCode($errMessage);
 
             return response()->json([
-                'status' => ServiceTypeResponse::ERROR,
+                'status' => DrugResponse::ERROR,
                 'message' => $errMessage,
             ], $errCode);
         }
@@ -177,15 +177,15 @@ class ServiceTypeController extends Controller
             $this->repository->delete($grade);
 
             return response()->json([
-                'status' => ServiceTypeResponse::SUCCESS,
-                'message' => ServiceTypeResponse::SUCCESS_DELETED,
+                'status' => DrugResponse::SUCCESS,
+                'message' => DrugResponse::SUCCESS_DELETED,
             ]);
         } catch (\Throwable $th) {
             $errMessage = $th->getMessage();
             $errCode = CommonHelper::getStatusCode($errMessage);
 
             return response()->json([
-                'status' => ServiceTypeResponse::ERROR,
+                'status' => DrugResponse::ERROR,
                 'message' => $errMessage,
             ], $errCode);
         }
