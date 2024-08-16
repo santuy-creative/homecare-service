@@ -61,4 +61,18 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::patch('/{uuid}', [\App\Http\Controllers\Api\DrugController::class, 'update']);
         Route::delete('/{uuid}', [\App\Http\Controllers\Api\DrugController::class, 'destroy']);
     });
+
+    Route::prefix('payment_methods')->group(function() {
+        Route::get('/', [\App\Http\Controllers\Api\PaymentMethodController::class, 'index']);
+        Route::get('/{uuid}', [\App\Http\Controllers\Api\PaymentMethodController::class, 'show']);
+        Route::post('/', [\App\Http\Controllers\Api\PaymentMethodController::class, 'store']);
+        Route::patch('/{uuid}', [\App\Http\Controllers\Api\PaymentMethodController::class, 'update']);
+        Route::delete('/{uuid}', [\App\Http\Controllers\Api\PaymentMethodController::class, 'destroy']);
+    });
+
+    Route::prefix('transactions')->group(function() {
+        Route::get('/', [\App\Http\Controllers\Api\TransactionController::class, 'index']);
+        Route::get('/{uuid}', [\App\Http\Controllers\Api\TransactionController::class, 'show']);
+        Route::post('/', [\App\Http\Controllers\Api\TransactionController::class, 'store']);
+    });
 });

@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('description');
             $table->timestamp('service_date');
+            $table->uuid('service_type_uuid');
             $table->string('status');
             $table->double('total_amount');
             $table->timestamps();
@@ -25,6 +26,12 @@ return new class extends Migration
             $table->foreign('user_uuid')
                 ->references('uuid')
                 ->on('users')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+
+            $table->foreign('service_type_uuid')
+                ->references('uuid')
+                ->on('service_types')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
 
