@@ -3,8 +3,13 @@
 namespace App\Repositories;
 
 use App\Helpers\CommonHelper;
+use App\Models\Drug;
+use App\Models\Nurse;
+use App\Models\ServiceType;
 use App\Models\Transaction;
+use App\Models\TransactionDetail;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 
 class TransactionRepository
 {
@@ -98,17 +103,66 @@ class TransactionRepository
 
     public function add($data)
     {
-        $model = new Transaction();
-        $model->name = Arr::get($data, 'name');
-        $model->description = Arr::get($data, 'description');
-        $model->user_uuid = Arr::get($data, 'user_uuid');
-        $model->patient_uuid = Arr::get($data, 'patient_uuid');
-        $model->service_date = Arr::get($data, 'service_date');
-        $model->status = Arr::get($data, 'status');
-        $model->total_amount = Arr::get($data, 'total_amount');
-        $model->save();
+        DB::beginTransaction();
+        try {
+            $transaction = new Transaction();
+            $transaction->name = Arr::get($data, 'name');
+            $transaction->description = Arr::get($data, 'description');
+            $transaction->user_uuid = Arr::get($data, 'user_uuid');
+            $transaction->patient_uuid = Arr::get($data, 'patient_uuid');
+            $transaction->service_date = Arr::get($data, 'service_date');
+            $transaction->status = Transaction::STATUS_PENDING;
+            $transaction->total_amount = 0;
+            $transaction->save();
 
-        return $model;
+            $totalAmount = 0;
+            $details = Arr::get($data, 'details');
+            foreach ($details as $detail) {
+                $item_type = Arr::get($detail, 'item_type');
+                $item_uuid = Arr::get($detail, 'item_uuid');
+                $itemDetail = $this->getTransactionDetailItem($item_type, $item_uuid);
+                $quantity = Arr::get($detail, 'quantity');
+                $subTotal = $quantity * $itemDetail->price;
+
+                $transactionDetail = new TransactionDetail();
+                $transactionDetail->transaction_uuid = $transaction->uuid;
+                $transactionDetail->name = $itemDetail->name;
+                $transactionDetail->status = Transaction::STATUS_PENDING;
+                $transactionDetail->quantity = $quantity;
+                $transactionDetail->unit_price = $itemDetail->price;
+                $transactionDetail->sub_total = $subTotal;
+                $transactionDetail->item_type = Arr::get($detail, 'item_type');
+                $transactionDetail->item_uuid = Arr::get($detail, 'item_uuid');
+
+                $transactionDetail->save();
+
+                $totalAmount += $subTotal;
+            }
+
+            $transaction->total_amount = $totalAmount;
+            $transaction->update();
+
+            DB::commit();
+
+            return $transaction->find($transaction->uuid);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw $e;
+        }
+    }
+
+    public function getTransactionDetailItem($item_type, $item_uuid) {
+        if ($item_type === 'service') {
+            $service = ServiceType::findOrFail($item_uuid);
+            return $service;
+        }
+
+        if ($item_type === 'drug') {
+            $drug = Drug::findOrFail($item_uuid);
+            return $drug;
+        }
+
+        return null;
     }
 
     public function update($uuid, $data)

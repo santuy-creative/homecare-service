@@ -99,10 +99,6 @@ class TransactionController extends Controller
                     'required',
                     'date',
                 ],
-                'service_type_uuid' => [
-                    'required',
-                    'string',
-                ],
                 'details' => 'required|array',
                 'details.*.quantity' => 'required|integer|min:1',
                 'details.*.item_type' => 'required|string|max:255',
@@ -116,6 +112,7 @@ class TransactionController extends Controller
             $validator->validate();
             $validator = $validator->safe()->all();
             Arr::set($validator, 'name', $transactionName);
+            Arr::set($validator, 'description', "Detail $transactionName");
             Arr::set($validator, 'user_uuid', $userUuid);
 
             $transaction = $this->repository->add($validator);

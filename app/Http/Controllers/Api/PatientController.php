@@ -35,6 +35,7 @@ class PatientController extends Controller
 
             if(!empty($profile)) {
                 $validator = Validator::make($request->all(), [
+                    'nik'       => 'sometimes|string',
                     'firstname' => 'sometimes|string',
                     'lastname'  => 'sometimes|string',
                     'birthdate' => 'sometimes|date',
@@ -55,6 +56,7 @@ class PatientController extends Controller
             }
 
             $validator = Validator::make($request->all(), [
+                'nik'       => 'required|string',
                 'firstname' => 'required|string',
                 'lastname'  => 'required|string',
                 'birthdate' => 'required|date',

@@ -130,9 +130,19 @@ class PaymentMethodController extends Controller
                 ], 201);
             }
 
-            $validator = Validator::make($request->all(), [
-                'name'      => "required|string|unique:payment_methods",
-            ]);
+            $rules = [
+                'name' => [
+                    'sometimes',
+                    'string',
+                ],
+                'description' => [
+                    'required',
+                    'string',
+                ],
+            ];
+
+
+            $validator = Validator::make($request->all(), $rules);
 
             $validator->validate();
             $validator = $validator->safe()->all();

@@ -31,7 +31,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/', [\App\Http\Controllers\Api\UserController::class, 'index']);
 
         Route::post('/customers', [\App\Http\Controllers\Api\CustomerController::class, 'store']);
-        Route::post('/medical-persons', [\App\Http\Controllers\Api\CustomerController::class, 'store']);
+        Route::post('/medical-persons', [\App\Http\Controllers\Api\MedicalPersonController::class, 'store']);
         Route::post('/nurses', [\App\Http\Controllers\Api\NurseController::class, 'store']);
         Route::post('/patients', [\App\Http\Controllers\Api\PatientController::class, 'store']);
     });

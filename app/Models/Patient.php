@@ -20,6 +20,7 @@ class Patient extends Model
      */
     protected $fillable = [
         'user_uuid',
+        'nik',
         'firstname',
         'lastname',
         'birthdate',

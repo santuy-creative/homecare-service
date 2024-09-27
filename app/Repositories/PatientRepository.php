@@ -104,6 +104,7 @@ class PatientRepository
     {
         $model = new Patient();
         $model->user_uuid = Arr::get($data, 'user_uuid');
+        $model->nik = Arr::get($data, 'nik');
         $model->firstname = Arr::get($data, 'firstname');
         $model->lastname = Arr::get($data, 'lastname');
         $model->birthdate = Arr::get($data, 'birthdate');

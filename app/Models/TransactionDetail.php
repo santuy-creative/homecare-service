@@ -6,18 +6,13 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Transaction extends Model
+class TransactionDetail extends Model
 {
     use HasUuids, HasFactory;
 
-    protected $table = "transactions";
+    protected $table = "transaction_details";
 
     protected $primaryKey = 'uuid';
-
-    const STATUS_PENDING = 'pending';
-    const STATUS_CANCEL = 'cancelled';
-    const STATUS_SUCCESS = 'success';
-    const STATUS_VERIFIED = 'verified';
 
     /**
      * The attributes that are mass assignable.
@@ -25,13 +20,13 @@ class Transaction extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'transaction_uuid',
         'name',
-        'description',
-        'user_uuid',
-        'patient_uuid',
-        'service_date',
-        'service_type_uuid',
         'status',
-        'total_amount',
+        'quantity',
+        'unit_price',
+        'sub_total',
+        'item_type',
+        'item_uuid',
     ];
 }
