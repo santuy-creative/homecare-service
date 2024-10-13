@@ -9,7 +9,7 @@ class Customer extends Model
 {
     use HasUuids;
 
-    protected $table = "profiles";
+    protected $table = "customers";
 
     protected $primaryKey = 'uuid';
 

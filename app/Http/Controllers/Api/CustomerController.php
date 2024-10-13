@@ -38,7 +38,7 @@ class CustomerController extends Controller
                     'firstname' => 'sometimes|string',
                     'lastname'  => 'sometimes|string',
                     'birthdate' => 'sometimes|date',
-                    'phone'     => "sometimes|string|unique:profiles,phone,$userUuid,user_uuid",
+                    'phone'     => "sometimes|string|unique:customers,phone,$userUuid,user_uuid",
                     'bio'       => 'sometimes|string',
                     'address'   => 'sometimes|string',
                 ]);
@@ -58,7 +58,7 @@ class CustomerController extends Controller
                 'firstname' => 'required|string',
                 'lastname'  => 'required|string',
                 'birthdate' => 'required|date',
-                'phone'     => 'required|string|unique:profiles',
+                'phone'     => 'required|string|unique:customers',
                 'bio'       => 'required|string',
                 'address'       => 'required|string',
             ]);
